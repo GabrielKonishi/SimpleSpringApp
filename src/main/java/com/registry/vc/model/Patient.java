@@ -19,7 +19,11 @@ import org.hibernate.validator.constraints.br.CPF;
 
 
 @Entity(name = "patient") //anotaçao jpa, é mapeada para uma tabela no banco de dados
-public class Patient extends AbstractEntity{
+public class Patient{
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
 	@NotBlank(message = "o email deve ser preenchido")
 	private String name;
@@ -37,6 +41,39 @@ public class Patient extends AbstractEntity{
 	@OneToMany
 	private List<Vaccine> vaccine;
 	
+	
+	
+
+
+	public Patient() {
+		super();
+	}
+
+
+	public Patient(Long id, @NotBlank(message = "o email deve ser preenchido") String name,
+			@NotBlank(message = "o email deve ser preenchido") String email,
+			@NotBlank(message = "o cpf deve ser preenchido") String cpf,
+			@NotBlank(message = "o cpf deve ser preenchido") String dataNascimento, List<Vaccine> vaccine) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.cpf = cpf;
+		this.dataNascimento = dataNascimento;
+		this.vaccine = vaccine;
+	}
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
 	public String getName() {
 		return name;
 	}
@@ -75,5 +112,33 @@ public class Patient extends AbstractEntity{
 	public void setDataNascimento(String dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Patient other = (Patient) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
 	
 }
