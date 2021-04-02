@@ -3,8 +3,9 @@ package com.registry.vc.dto;
 
 
 import com.registry.vc.model.Patient;
+import com.registry.vc.model.Vaccine;
 
-public class VaccineResponse {
+public class VaccineDto {
 	
 	private String vaccineName;
 	
@@ -21,6 +22,17 @@ public class VaccineResponse {
 	}
 
 	
+	public VaccineDto() {
+		super();
+	}
+
+	public VaccineDto(String vaccineName, String patientEmail, String dataAplicada) {
+		super();
+		this.vaccineName = vaccineName;
+		this.patientEmail = patientEmail;
+		this.dataAplicada = dataAplicada;
+	}
+
 	public String getPatientEmail() {
 		return patientEmail;
 	}
@@ -36,6 +48,11 @@ public class VaccineResponse {
 	public void setDataAplicada(String dataAplicada) {
 		this.dataAplicada = dataAplicada;
 	}
+	
+	public Vaccine toVaccineResponse(){
+	    return new Vaccine(vaccineName, patientEmail, dataAplicada);
+	}
+
 	
 	
 }

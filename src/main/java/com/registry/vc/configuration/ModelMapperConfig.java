@@ -4,7 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.registry.vc.dto.VaccineResponse;
+import com.registry.vc.dto.VaccineDto;
 import com.registry.vc.model.Vaccine;
 
 
@@ -16,8 +16,6 @@ public class ModelMapperConfig {
 	public ModelMapper modelMapper() {
 		var modelMapper = new ModelMapper();
 		
-		modelMapper.createTypeMap(Vaccine.class, VaccineResponse.class)
-			.<String>addMapping(src -> src.getPatient().getEmail(), (dest, value) -> dest.setPatientEmail(value));
 	
 		return modelMapper;
 	}

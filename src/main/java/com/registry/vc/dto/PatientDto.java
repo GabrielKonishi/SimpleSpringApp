@@ -9,14 +9,25 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
+import com.registry.vc.model.Patient;
 import com.registry.vc.model.Vaccine;
 
-public class PatientResponse {
+public class PatientDto {
 	private String name;
 	private String email;
 	private String cpf;
 	private String dataNascimento;
 	
+	public PatientDto() {
+		super();
+	}
+	public PatientDto(String name, String email, String cpf, String dataNascimento) {
+		super();
+		this.name = name;
+		this.email = email;
+		this.cpf = cpf;
+		this.dataNascimento = dataNascimento;
+	}
 	public String getName() {
 		return name;
 	}
@@ -40,6 +51,11 @@ public class PatientResponse {
 	}
 	public void setDataNascimento(String dataNascimento) {
 		this.dataNascimento = dataNascimento;
+	}
+	
+	
+	public Patient toPatient(){
+	    return new Patient(name, email, cpf, dataNascimento);
 	}
 	
 }

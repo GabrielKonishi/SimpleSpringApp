@@ -35,15 +35,25 @@ public class Vaccine{
 	public Vaccine() {
 		super();
 	}
+
 	
-	public Vaccine(Long id, String vaccineName, @NotNull(message = "Favor identificar o id do usuario") Patient patient,
+	
+	public Vaccine(String vaccineName, @NotNull(message = "Favor identificar o id do usuario") Patient patient,
 			String dataAplicada) {
 		super();
-		this.id = id;
 		this.vaccineName = vaccineName;
 		this.patient = patient;
 		this.dataAplicada = dataAplicada;
 	}
+
+
+
+	public Vaccine(String vaccineName, String patientEmail, String dataAplicada) {
+		// TODO Auto-generated constructor stub
+	}
+
+
+
 	public Long getId() {
 		return id;
 	}

@@ -42,7 +42,6 @@ public class Patient{
 	private List<Vaccine> vaccine;
 	
 	
-	
 
 
 	public Patient() {
@@ -50,17 +49,15 @@ public class Patient{
 	}
 
 
-	public Patient(Long id, @NotBlank(message = "o email deve ser preenchido") String name,
+	public Patient(@NotBlank(message = "o email deve ser preenchido") String name,
 			@NotBlank(message = "o email deve ser preenchido") String email,
 			@NotBlank(message = "o cpf deve ser preenchido") String cpf,
-			@NotBlank(message = "o cpf deve ser preenchido") String dataNascimento, List<Vaccine> vaccine) {
+			@NotBlank(message = "o cpf deve ser preenchido") String dataNascimento) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.cpf = cpf;
 		this.dataNascimento = dataNascimento;
-		this.vaccine = vaccine;
 	}
 
 
@@ -139,6 +136,8 @@ public class Patient{
 			return false;
 		return true;
 	}
+	
+	
 
 	
 }

@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,8 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.registry.vc.dto.PatientResponse;
-import com.registry.vc.dto.VaccineResponse;
+import com.registry.vc.dto.PatientDto;
+import com.registry.vc.dto.VaccineDto;
+import com.registry.vc.dto.VaccineRequestDto;
 import com.registry.vc.model.Patient;
 import com.registry.vc.model.Vaccine;
 import com.registry.vc.repository.VaccineRepository;
@@ -34,7 +36,7 @@ public class VaccineEndpoint {
 	private ModelMapper modelMapper;
 	
 	@GetMapping //mapeamento do verbo http nesse exemplo é get
-	public List<VaccineResponse> listarTodos(){
+	public List<VaccineDto> listarTodos(){
 		return vaccineRepository.findAll()
 				.stream()
 				.map(this::toVaccineDto)
@@ -43,9 +45,9 @@ public class VaccineEndpoint {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public String cadastroVacina(@Valid @RequestBody Vaccine vaccine) {
-		vaccineRepository.save(vaccine);
-		return "Vacina Cadastrada com sucesso";
+	public ResponseEntity<Vaccine> cadastroVacina(@Valid @RequestBody VaccineRequestDto vaccineRequestDto) {
+		Vaccine vaccine = vaccineRepository.save(vaccineRequestDto.toVaccineRequest());
+		return new ResponseEntity("vacina cadastrada com sucesso", HttpStatus.CREATED);
 	}
 	
 	
@@ -56,8 +58,8 @@ public class VaccineEndpoint {
 		return "excluido com sucesso";
 	}
 	
-	private VaccineResponse toVaccineDto(Vaccine vaccine) {
-		return modelMapper.map(vaccine, VaccineResponse.class);
+	private VaccineDto toVaccineDto(Vaccine vaccine) {
+		return modelMapper.map(vaccine, VaccineDto.class);
 		
 	}
 	

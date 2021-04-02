@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.registry.vc.dto.PatientResponse;
+import com.registry.vc.dto.PatientDto;
+import com.registry.vc.dto.PatientRequestDto;
 import com.registry.vc.model.Patient;
 import com.registry.vc.repository.PatientRepository;
 
@@ -36,7 +37,7 @@ public class PatientEndpoint {
 	private ModelMapper modelMapper;
 	
 	@GetMapping //mapeamento do verbo http nesse exemplo é get
-	public List<PatientResponse> listarTodos(){
+	public List<PatientDto> listarTodos(){
 		return patientRepository.findAll()
 				.stream()
 				.map(this::toPatientDto)
@@ -46,22 +47,16 @@ public class PatientEndpoint {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity adicionar(@Valid @RequestBody Patient patient){
-		patientRepository.save(patient);
-		//return new ResponseEntity<Patient>(patient,HttpStatus.CREATED);
-		return new ResponseEntity("Paciente cadastrado com sucesso", HttpStatus.CREATED);
+	public ResponseEntity<Patient> adicionar(@Valid @RequestBody PatientRequestDto patientRequestDto){
+		Patient patient = patientRepository.save(patientRequestDto.toPatientRequest());
+		//return new ResponseEntity<Patient>(patient,HttspStatus.CREATED);
+		return new ResponseEntity("cadastrado com sucesso", HttpStatus.CREATED);
 		
 	}
 	
-	@DeleteMapping("/{id}")
-	public ResponseEntity deletarPatient(@PathVariable Long id) {
-		patientRepository.deleteById(id);
-		return new ResponseEntity("Paciente excluido com sucesso", HttpStatus.OK);
-		
-	}
 	
-	private PatientResponse toPatientDto(Patient patient) {
-		return modelMapper.map(patient, PatientResponse.class);
+	private PatientDto toPatientDto(Patient patient) {
+		return modelMapper.map(patient, PatientDto.class);
 		
 	}
 	
