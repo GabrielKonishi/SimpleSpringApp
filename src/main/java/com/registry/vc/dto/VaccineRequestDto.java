@@ -2,13 +2,13 @@ package com.registry.vc.dto;
 
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.registry.vc.model.Patient;
 import com.registry.vc.model.Vaccine;
 
 public class VaccineRequestDto {
-	
 	
 	private String vaccineName;
 	

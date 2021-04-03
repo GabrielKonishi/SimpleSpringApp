@@ -15,18 +15,20 @@ import javax.validation.constraints.NotNull;
 
 @Entity(name = "vaccine")
 public class Vaccine{
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotBlank(message = "Favor informar o nome da vacina")
 	@Column(name = "vaccine_name",nullable = false)
 	private String vaccineName;
 	
-	@NotNull(message = "Favor identificar o id do usuario")
+	@NotBlank(message = "Favor identificar o id do usuario")
 	@ManyToOne
 	private Patient patient;
 	
-	
+	@NotBlank(message = "informe a data de aplicação")
 	@Column(name="data_aplicada", nullable = false)
 	private String dataAplicada;
 	
@@ -45,13 +47,6 @@ public class Vaccine{
 		this.patient = patient;
 		this.dataAplicada = dataAplicada;
 	}
-
-
-
-	public Vaccine(String vaccineName, String patientEmail, String dataAplicada) {
-		// TODO Auto-generated constructor stub
-	}
-
 
 
 	public Long getId() {

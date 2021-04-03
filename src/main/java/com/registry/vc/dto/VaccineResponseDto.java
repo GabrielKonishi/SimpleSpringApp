@@ -2,10 +2,15 @@ package com.registry.vc.dto;
 
 
 
+import java.util.function.Function;
+
+import javax.validation.constraints.NotBlank;
+
 import com.registry.vc.model.Patient;
 import com.registry.vc.model.Vaccine;
 
-public class VaccineDto {
+public class VaccineResponseDto {
+	
 	
 	private String vaccineName;
 	
@@ -22,11 +27,11 @@ public class VaccineDto {
 	}
 
 	
-	public VaccineDto() {
+	public VaccineResponseDto() {
 		super();
 	}
 
-	public VaccineDto(String vaccineName, String patientEmail, String dataAplicada) {
+	public VaccineResponseDto(String vaccineName, String patientEmail, String dataAplicada) {
 		super();
 		this.vaccineName = vaccineName;
 		this.patientEmail = patientEmail;
@@ -49,10 +54,17 @@ public class VaccineDto {
 		this.dataAplicada = dataAplicada;
 	}
 	
-	public Vaccine toVaccineResponse(){
-	    return new Vaccine(vaccineName, patientEmail, dataAplicada);
+
+	public VaccineResponseDto toVaccineDto(Vaccine vaccine) {
+		var vaccineDto = new VaccineResponseDto();
+		vaccineDto.setVaccineName(vaccine.getVaccineName());
+		vaccineDto.setPatientEmail(vaccine.getPatient().getEmail());
+		vaccineDto.setDataAplicada(vaccine.getDataAplicada());
+		return vaccineDto;
 	}
 
+	
+	
 	
 	
 }

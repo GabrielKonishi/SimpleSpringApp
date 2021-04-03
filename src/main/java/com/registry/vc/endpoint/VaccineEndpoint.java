@@ -1,5 +1,6 @@
 package com.registry.vc.endpoint;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -7,6 +8,7 @@ import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,9 +19,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.registry.vc.dto.PatientDto;
-import com.registry.vc.dto.VaccineDto;
+import com.registry.vc.dto.PatientResponseDto;
+import com.registry.vc.dto.VaccineResponseDto;
 import com.registry.vc.dto.VaccineRequestDto;
 import com.registry.vc.model.Patient;
 import com.registry.vc.model.Vaccine;
@@ -32,35 +35,40 @@ public class VaccineEndpoint {
 	@Autowired
 	private VaccineRepository vaccineRepository;
 	
-	@Autowired
-	private ModelMapper modelMapper;
 	
 	@GetMapping //mapeamento do verbo http nesse exemplo é get
-	public List<VaccineDto> listarTodos(){
+	public List<VaccineResponseDto> listarTodos(){
 		return vaccineRepository.findAll()
 				.stream()
 				.map(this::toVaccineDto)
 				.collect(Collectors.toList());
+		
 	}
+	
+	
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Vaccine> cadastroVacina(@Valid @RequestBody VaccineRequestDto vaccineRequestDto) {
-		Vaccine vaccine = vaccineRepository.save(vaccineRequestDto.toVaccineRequest());
-		return new ResponseEntity("vacina cadastrada com sucesso", HttpStatus.CREATED);
+			Vaccine vaccine = vaccineRepository.save(vaccineRequestDto.toVaccineRequest());
+			URI location = ServletUriComponentsBuilder
+	                .fromCurrentRequest()
+	                .path("/{id}")
+	                .buildAndExpand(vaccine.getId())
+	                .toUri();
+			HttpHeaders responseHeaders = new HttpHeaders();
+			   responseHeaders.setLocation(location);
+			return new ResponseEntity<Vaccine>(vaccine, responseHeaders, HttpStatus.CREATED);
 	}
 	
 	
-	
-	@DeleteMapping("/{id}")
-	public String deletarVaccine(@PathVariable Long id) {
-		vaccineRepository.deleteById(id);
-		return "excluido com sucesso";
+	private VaccineResponseDto toVaccineDto(Vaccine vaccine) {
+		var vaccineDto = new VaccineResponseDto();
+		vaccineDto.setVaccineName(vaccine.getVaccineName());
+		vaccineDto.setPatientEmail(vaccine.getPatient().getEmail());
+		vaccineDto.setDataAplicada(vaccine.getDataAplicada());
+		return vaccineDto;
 	}
 	
-	private VaccineDto toVaccineDto(Vaccine vaccine) {
-		return modelMapper.map(vaccine, VaccineDto.class);
-		
-	}
 	
 }

@@ -12,16 +12,16 @@ import javax.validation.constraints.NotBlank;
 import com.registry.vc.model.Patient;
 import com.registry.vc.model.Vaccine;
 
-public class PatientDto {
+public class PatientResponseDto {
 	private String name;
 	private String email;
 	private String cpf;
 	private String dataNascimento;
 	
-	public PatientDto() {
+	public PatientResponseDto() {
 		super();
 	}
-	public PatientDto(String name, String email, String cpf, String dataNascimento) {
+	public PatientResponseDto(String name, String email, String cpf, String dataNascimento) {
 		super();
 		this.name = name;
 		this.email = email;
