@@ -63,6 +63,11 @@ public class PatientEndpoint {
 		
 	}
 	
+	@GetMapping(path = "/{id}")
+	public List<PatientResponseDto> listarPorId(@PathVariable Long id){
+		return patientRepository.findById(id).stream().map(this::toPatientDto).collect(Collectors.toList());
+	}
+	
 	
 	private PatientResponseDto toPatientDto(Patient patient) {
 		var patientDto = new PatientResponseDto();
