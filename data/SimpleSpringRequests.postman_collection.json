@@ -1,0 +1,156 @@
+{
+	"info": {
+		"_postman_id": "e5868c4d-6c8c-4c4a-8d8b-c5cc1ed51021",
+		"name": "SimpleSpringRequests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetAllPatient",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/patient",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"patient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostPatient",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"gabriel\",\r\n    \"email\": \"gabrielhenrique@gmail.com\",\r\n    \"cpf\": \"101.435.090-55\",\r\n    \"dataNascimento\": \"1996-06-29\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/patient",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"patient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetPatientId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/patient/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"patient",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllVaccines",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/vaccine",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"vaccine"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostVaccine",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"vaccineName\": \"gripe\",\r\n    \"patient\": {\r\n        \"id\": 1\r\n    },\r\n    \"dataAplicada\": \"2018-08-12\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/vaccine",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"vaccine"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetVaccnieById",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/vaccine/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"vaccine",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
