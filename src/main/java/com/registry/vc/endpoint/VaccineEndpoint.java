@@ -61,6 +61,11 @@ public class VaccineEndpoint {
 			return new ResponseEntity<Vaccine>(vaccine, responseHeaders, HttpStatus.CREATED);
 	}
 	
+	@GetMapping(path = "/{id}")
+	public List<VaccineResponseDto> listarPorId(@PathVariable Long id){
+		return vaccineRepository.findById(id).stream().map(this::toVaccineDto).collect(Collectors.toList());
+	}
+	
 	
 	private VaccineResponseDto toVaccineDto(Vaccine vaccine) {
 		var vaccineDto = new VaccineResponseDto();
