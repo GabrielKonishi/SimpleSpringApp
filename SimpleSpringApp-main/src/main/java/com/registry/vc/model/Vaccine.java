@@ -1,45 +1,37 @@
 package com.registry.vc.model;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity(name = "vaccine")
-public class Vaccine{
+public class Vaccine {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(name = "vaccine_name",nullable = false)
+
+	@Column(name = "vaccine_name", nullable = false)
 	private String vaccineName;
-	
-	@NotNull(message = "Favor identificar o id do usuario")
-	@ManyToOne
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Patient patient;
-	
-	
-	@Column(name="data_aplicada", nullable = false)
-	private String dataAplicada;
-	
-	
-	
+
+	@Column(name = "data_aplicada", nullable = false)
+	private LocalDate dataAplicada;
+
 	public Vaccine() {
 		super();
 	}
 
-	
-	
 	public Vaccine(String vaccineName, @NotNull(message = "Favor identificar o id do usuario") Patient patient,
-			String dataAplicada) {
+			LocalDate dataAplicada) {
 		super();
 		this.vaccineName = vaccineName;
 		this.patient = patient;
@@ -49,29 +41,35 @@ public class Vaccine{
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public String getVaccineName() {
 		return vaccineName;
 	}
+
 	public void setVaccineName(String vaccineName) {
 		this.vaccineName = vaccineName;
 	}
-	
-	
+
 	public Patient getPatient() {
 		return patient;
 	}
+
 	public void setPatient(Patient patient) {
 		this.patient = patient;
 	}
-	public String getDataAplicada() {
+
+	public LocalDate getDataAplicada() {
 		return dataAplicada;
 	}
-	public void setDataAplicada(String dataAplicada) {
+
+	public void setDataAplicada(LocalDate dataAplicada) {
 		this.dataAplicada = dataAplicada;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -79,6 +77,7 @@ public class Vaccine{
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -95,6 +94,5 @@ public class Vaccine{
 			return false;
 		return true;
 	}
-	
-	
+
 }

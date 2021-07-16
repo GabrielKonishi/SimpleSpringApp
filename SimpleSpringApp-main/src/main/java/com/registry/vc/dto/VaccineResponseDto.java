@@ -1,9 +1,6 @@
 package com.registry.vc.dto;
 
-
-
-import com.registry.vc.model.Patient;
-import com.registry.vc.model.Vaccine;
+import java.time.LocalDate;
 
 public class VaccineResponseDto {
 	
@@ -11,7 +8,7 @@ public class VaccineResponseDto {
 	
 	private String patientEmail;
 	
-	private String dataAplicada;
+	private LocalDate dataAplicada;
 
 	public String getVaccineName() {
 		return vaccineName;
@@ -26,7 +23,7 @@ public class VaccineResponseDto {
 		super();
 	}
 
-	public VaccineResponseDto(String vaccineName, String patientEmail, String dataAplicada) {
+	public VaccineResponseDto(String vaccineName, String patientEmail, LocalDate dataAplicada) {
 		super();
 		this.vaccineName = vaccineName;
 		this.patientEmail = patientEmail;
@@ -41,11 +38,11 @@ public class VaccineResponseDto {
 		this.patientEmail = patientEmail;
 	}
 
-	public String getDataAplicada() {
+	public LocalDate getDataAplicada() {
 		return dataAplicada;
 	}
 
-	public void setDataAplicada(String dataAplicada) {
+	public void setDataAplicada(LocalDate dataAplicada) {
 		this.dataAplicada = dataAplicada;
 	}
 	

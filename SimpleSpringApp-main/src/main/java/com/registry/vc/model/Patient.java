@@ -1,58 +1,52 @@
 package com.registry.vc.model;
 
-import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.registry.vc.dto.PatientResponseDto;
 
-@Entity(name = "patient") //anotaçao jpa, é mapeada para uma tabela no banco de dados
-public class Patient{
-	
+@Transactional
+@Entity(name = "patient") // anotaçao jpa, é mapeada para uma tabela no banco de dados
+public class Patient {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@NotBlank(message = "o email deve ser preenchido")
-	private String name;
-	
-	@NotBlank(message = "o email deve ser preenchido")
-	private String email;
-	
-	@NotBlank(message = "o cpf deve ser preenchido")
-	@Column(unique = true)
-	private String cpf;
-	
-	@NotBlank(message = "o cpf deve ser preenchido")
-	private String dataNascimento;
-	
-	@OneToMany
-	private List<Vaccine> vaccine;
-	
-	
 
+	@Column(nullable = false, length = 100)
+	private String name;
+
+	@Column(unique = true, length = 75, nullable = false)
+	private String email;
+
+	@Column(unique = true, length = 11, nullable = false)
+	private String cpf;
+
+	@Column(name = "data_nascimento", nullable = false)
+	private LocalDate dataNascimento;
+
+	@OneToMany(fetch = FetchType.LAZY)
+	private List<Vaccine> vaccine;
 
 	public Patient() {
 		super();
 	}
 
-
 	public Patient(@NotBlank(message = "o email deve ser preenchido") String name,
 			@NotBlank(message = "o email deve ser preenchido") String email,
 			@NotBlank(message = "o cpf deve ser preenchido") String cpf,
-			@NotBlank(message = "o cpf deve ser preenchido") String dataNascimento) {
+			@NotBlank(message = "o cpf deve ser preenchido") LocalDate dataNascimento) {
 		super();
 		this.name = name;
 		this.email = email;
@@ -60,56 +54,45 @@ public class Patient{
 		this.dataNascimento = dataNascimento;
 	}
 
-
 	public Long getId() {
 		return id;
 	}
-
 
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-
 	public String getName() {
 		return name;
 	}
 
-	
 	public void setName(String name) {
 		this.name = name;
 	}
-	
 
 	public String getEmail() {
 		return email;
 	}
 
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 
 	public String getCpf() {
 		return cpf;
 	}
 
-
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 
-
-	public String getDataNascimento() {
+	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
 
-
-	public void setDataNascimento(String dataNascimento) {
+	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -118,7 +101,6 @@ public class Patient{
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -139,5 +121,4 @@ public class Patient{
 	
 	
 
-	
 }

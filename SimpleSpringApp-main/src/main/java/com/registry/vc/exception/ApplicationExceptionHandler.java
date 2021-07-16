@@ -1,29 +1,50 @@
 package com.registry.vc.exception;
 
+import java.time.LocalDateTime;
+
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-//@ControllerAdvice
-public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler{
-	
-	/*@ExceptionHandler(Exception.class)
-	public ResponseEntity handleException() {
-		System.out.println("caiu no exception");
-		return new ResponseEntity("error", HttpStatus.BAD_REQUEST);
-	}*/
-	
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
+@RestControllerAdvice
+public class ApplicationExceptionHandler {
+
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ErrorDetail> handleException(Exception exception) {
+		return ResponseEntity
+				.status(HttpStatus.INTERNAL_SERVER_ERROR)
+				.body(new ErrorDetail
+						.Builder(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.name())
+						.description(exception.getMessage())
+						.timestamp(LocalDateTime.now())
+						.build());
+
+	}
+
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity BadRequestExceptionHandler() {
-		System.out.println("erro aqui");
-		return new ResponseEntity("error", HttpStatus.BAD_REQUEST);
+	public ResponseEntity<ErrorDetail> badRequestExceptionHandler(MethodArgumentNotValidException methodArgumentNotValidException) {
+		return ResponseEntity
+				.status(HttpStatus.BAD_REQUEST)
+				.body(new ErrorDetail
+						.Builder(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.name())
+						.description("Erro ao validar os campos de requisicao")
+						.timestamp(LocalDateTime.now())
+						.build());
 	}
 	
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<ErrorDetail> dataIntegrityViolationException(DataIntegrityViolationException dataIntegrityViolationException) {
+		return ResponseEntity
+				.status(HttpStatus.BAD_REQUEST)
+				.body(new ErrorDetail
+						.Builder(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.name())
+						.description("Erro ao validar os campos no banco de dados")
+						.timestamp(LocalDateTime.now())
+						.build());
+
+	}
 	
 }

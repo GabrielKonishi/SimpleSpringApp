@@ -1,19 +1,30 @@
 package com.registry.vc.dto;
 
-import javax.persistence.Column;
+import java.time.LocalDate;
+
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.br.CPF;
 
 import com.registry.vc.model.Patient;
 
 public class PatientRequestDto {
 
+	@NotBlank
 	private String name;
-	
+
+	@Email
+	@NotBlank
 	private String email;
-	
+
+	@CPF
+	@NotBlank
 	private String cpf;
-	
-	private String dataNascimento;
+
+	@NotNull
+	private LocalDate dataNascimento;
 
 	public String getName() {
 		return name;
@@ -39,15 +50,15 @@ public class PatientRequestDto {
 		this.cpf = cpf;
 	}
 
-	public String getDataNascimento() {
+	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(String dataNascimento) {
+	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 
-	public PatientRequestDto(String name, String email, String cpf, String dataNascimento) {
+	public PatientRequestDto(String name, String email, String cpf, LocalDate dataNascimento) {
 		super();
 		this.name = name;
 		this.email = email;
@@ -58,9 +69,9 @@ public class PatientRequestDto {
 	public PatientRequestDto() {
 		super();
 	}
-	
-	public Patient toPatientRequest(){
-	    return new Patient(name, email, cpf, dataNascimento);
+
+	public Patient toPatientRequest() {
+		return new Patient(name, email, cpf, dataNascimento);
 	}
-	
+
 }

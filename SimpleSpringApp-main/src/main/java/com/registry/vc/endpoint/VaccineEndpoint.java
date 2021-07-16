@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,10 +20,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.registry.vc.dto.PatientResponseDto;
 import com.registry.vc.dto.VaccineResponseDto;
 import com.registry.vc.dto.VaccineRequestDto;
-import com.registry.vc.model.Patient;
 import com.registry.vc.model.Vaccine;
 import com.registry.vc.repository.VaccineRepository;
 
@@ -35,7 +32,7 @@ public class VaccineEndpoint {
 	@Autowired
 	private VaccineRepository vaccineRepository;
 	
-	@GetMapping //mapeamento do verbo http nesse exemplo é get
+	@GetMapping 
 	public List<VaccineResponseDto> listarTodos(){
 		return vaccineRepository.findAll()
 				.stream()
@@ -55,6 +52,16 @@ public class VaccineEndpoint {
 		HttpHeaders responseHeaders = new HttpHeaders();
 		   responseHeaders.setLocation(location);
 		return new ResponseEntity<Vaccine>(vaccine, responseHeaders, HttpStatus.CREATED);
+	}
+	
+	@GetMapping(path = "/{id}")
+	public List<VaccineResponseDto> listarPorId(@PathVariable Long id){
+		return vaccineRepository.findById(id).stream().map(this::toVaccineDto).collect(Collectors.toList());
+	}
+	
+	@DeleteMapping
+	public void deleteAll() {
+		vaccineRepository.deleteAll();
 	}
 	
 	
