@@ -48,7 +48,7 @@ public class PatientEndpoint {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Patient> adicionar(@Valid @RequestBody PatientRequestDto patientRequestDto, BindingResult result, RedirectAttributes attributes) throws Exception {
-		if(cpfExist(patientRequestDto.getCpf()) == true && emailExist(patientRequestDto.getEmail()) == true) {
+		if(cpfExist(patientRequestDto.getCpf()) == true || emailExist(patientRequestDto.getEmail()) == true) {
 			System.out.println("cpf ou email duplicado");
 			throw new Exception();
 		}
