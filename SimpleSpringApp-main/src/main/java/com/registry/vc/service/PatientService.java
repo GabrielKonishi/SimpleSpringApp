@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,15 +33,21 @@ public class PatientService {
 		return map;
 	}
 	
-	
-	public List<PatientResponseDto> findById(Long id) {
-		return patientRepository.findById(id).stream().map(this::toPatientDto).collect(Collectors.toList());
-	}
-	
 	public ResponseEntity<Patient> patientRegistry(@Valid @RequestBody PatientRequestDto patientRequestDto) throws Exception {
-		if(cpfExist(patientRequestDto.getCpf()) == true || emailExist(patientRequestDto.getEmail()) == true) {
-			System.out.println("cpf ou email duplicado");
-			throw new Exception();
+		String requestCpf = patientRequestDto.getCpf();
+		String requestEmail = patientRequestDto.getEmail();
+		String message = null;
+		if(cpfExist(requestCpf)) {
+			message = "cpf: " + requestCpf + " Already Exist";	
+			if(emailExist(requestEmail)) {
+				message = message + " & Email: " + requestEmail + " Already Exist";	
+			}
+		}else if(emailExist(requestEmail)) {
+			message = "Email: " + requestEmail + " Already Exist";	
+		}
+		
+		if(cpfExist(requestCpf) == true || emailExist(requestEmail) == true) {
+			throw new Exception(message);
 		}
 		Patient patient = patientRepository.save(patientRequestDto.toPatientRequest());
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(patient.getId())
@@ -49,6 +56,12 @@ public class PatientService {
 		responseHeaders.setLocation(location);
 		return new ResponseEntity<Patient>(patient, HttpStatus.CREATED);
 	}
+	
+
+	public List<PatientResponseDto> findByCpf(String cpf) {
+		return patientRepository.findByCpf(cpf).stream().map(this::toPatientDto).collect(Collectors.toList());
+	}
+	
 	
 	public boolean cpfExist( String cpf ) {
         return patientRepository.existsByCpf( cpf );
@@ -67,4 +80,6 @@ public class PatientService {
 		return patientDto;
 
 	}
+
+
 }

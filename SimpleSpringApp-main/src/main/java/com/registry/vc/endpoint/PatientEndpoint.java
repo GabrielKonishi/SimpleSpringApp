@@ -48,14 +48,13 @@ public class PatientEndpoint {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Patient> adicionar(@RequestBody PatientRequestDto patientRequestDto) throws Exception {
-		patientService.patientRegistry(patientRequestDto);
-		return new ResponseEntity<Patient>(HttpStatus.CREATED);
+		return patientService.patientRegistry(patientRequestDto);
 	}
 	
+	@GetMapping(path = "/{cpf}")
+	public List<PatientResponseDto> ListarPorCpf(@PathVariable String cpf){
+		return patientService.findByCpf(cpf);
 	
-	@GetMapping(path = "/{id}")
-	public List<PatientResponseDto> listarPorId(@PathVariable Long id){
-		return patientService.findById(id);
 	}
 		
 	
