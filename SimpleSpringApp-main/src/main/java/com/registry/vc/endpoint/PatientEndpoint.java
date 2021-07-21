@@ -28,70 +28,35 @@ import com.registry.vc.dto.PatientResponseDto;
 import com.registry.vc.dto.PatientRequestDto;
 import com.registry.vc.model.Patient;
 import com.registry.vc.repository.PatientRepository;
+import com.registry.vc.service.PatientService;
 
 @RestController 
 @RequestMapping("/patient") 
 public class PatientEndpoint {
 
 	@Autowired
-	private PatientRepository patientRepository;
+	private PatientService patientService;
+	
 	
 	@GetMapping // mapeamento do verbo http. Nesse exemplo é o método get
 	public List<PatientResponseDto> listarTodos() {
-		
-		List<PatientResponseDto> map  = patientRepository.findAll().stream().map(this::toPatientDto).collect(Collectors.toList());
-		
+		List<PatientResponseDto> map  = patientService.listAll();
 		return map;
 	}
 	
-
+	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Patient> adicionar(@Valid @RequestBody PatientRequestDto patientRequestDto, BindingResult result, RedirectAttributes attributes) throws Exception {
-		if(cpfExist(patientRequestDto.getCpf()) == true || emailExist(patientRequestDto.getEmail()) == true) {
-			System.out.println("cpf ou email duplicado");
-			throw new Exception();
-		}
-		Patient patient = patientRepository.save(patientRequestDto.toPatientRequest());
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(patient.getId())
-				.toUri();
-		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.setLocation(location);
-		return new ResponseEntity<Patient>(patient, responseHeaders, HttpStatus.CREATED);
+	public ResponseEntity<Patient> adicionar(@RequestBody PatientRequestDto patientRequestDto) throws Exception {
+		patientService.patientRegistry(patientRequestDto);
+		return new ResponseEntity<Patient>(HttpStatus.CREATED);
 	}
 	
 	
 	@GetMapping(path = "/{id}")
 	public List<PatientResponseDto> listarPorId(@PathVariable Long id){
-		return patientRepository.findById(id).stream().map(this::toPatientDto).collect(Collectors.toList());
+		return patientService.findById(id);
 	}
-	
-	@DeleteMapping
-	public void deleteAll() {
-		patientRepository.deleteAll();
-	}
-	
-	
-	
-	private PatientResponseDto toPatientDto(Patient patient) {
-		var patientDto = new PatientResponseDto();
-		patientDto.setName(patient.getName());
-		patientDto.setEmail(patient.getEmail());
-		patientDto.setCpf(patient.getCpf());
-		patientDto.setDataNascimento(patient.getDataNascimento());
-		return patientDto;
-
-	}
-	
-	public boolean cpfExist( String cpf ) {
-        return patientRepository.existsByCpf( cpf );
-    }
-	
-	public boolean emailExist( String email ) {
-        return patientRepository.existsByEmail( email );
-    }
-	
-	
-	
+		
 	
 }
